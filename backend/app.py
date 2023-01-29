@@ -1,10 +1,13 @@
 import json
 from flask import Flask, request, jsonify
+from flask_cors import CORS
+
 from flask_jwt_extended import JWTManager, create_access_token
 
 api = Flask(__name__)
 api.config.from_object('config.DevelopmentConfig')
 jwt = JWTManager(api)
+CORS(api)
 
 #Issue token for login
 @api.route('/token', methods=['POST'])
@@ -30,3 +33,7 @@ def create_token():
     #create token
     access_token = create_access_token(identity=username)
     return jsonify(access_token=access_token), 200
+
+#run server
+if __name__ == '__main__':
+    api.run()
