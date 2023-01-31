@@ -2,32 +2,20 @@ import json
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from bcrypt import hashpw, gensalt, checkpw
+from models import db, User, Question, Answer
+import openai
 
 api = Flask(__name__)
 api.config.from_object('config.DevelopmentConfig')
 jwt = JWTManager(api)
 CORS(api)
-db = SQLAlchemy(api)
+db.init_app(api)
 
-# Create a user model
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(30), unique=True, nullable=False)
-    password = db.Column(db.String(30), nullable=False)
-
-    def __repr__(self):
-        return '<User %r>' % self.username
-
-# Create database
+#create database
 #with api.app_context():
 #    db.create_all()
-
-# Create a user to test with
-#with api.app_context():
-#    new_user = User(username='test', password='test')
-#    db.session.add(new_user)
 #    db.session.commit()
 
 #Issue token for login
@@ -100,11 +88,111 @@ def signup():
     access_token = create_access_token(identity=username)
     return jsonify(access_token=access_token), 200
 
-# Authenticated route to use api
-@api.route('/answer', methods=['GET'])
+# Authenticated route to use fetch answers by user
+@api.route('/getanswers', methods=['GET'])
 @jwt_required()
 def answer():
-    return jsonify({"answer": 42}), 200
+    #get username from token
+    username = get_jwt_identity()
+
+    #get userID from database
+    with api.app_context():
+        user = User.query.filter_by(username=username).first()
+        userID = user.id
+
+        #get answers from database
+        answers = Answer.query.filter_by(user_id=userID).all()
+        #gather answer data into list
+        answerList = []
+        for answer in answers:
+            #get question text from id
+            question = Question.query.filter_by(id=answer.question_id).first()
+            answerList.append({"question": question.question, "answer": answer.answer, "feedback": answer.feedback, "date": answer.date})
+
+    #return answer data
+    return jsonify(answerList), 200
+
+# Authenticated route to fetch a question to answer
+@api.route('/getquestion', methods=['GET'])
+@jwt_required()
+def question():
+    #get userID from database
+    with api.app_context():
+        #get questions from database
+        questions = Question.query.all()
+        #gather question data into list
+        questionList = []
+        #add the questions
+        for question in questions:
+            questionList.append({"question": question.question, "id": question.id})      
+
+    #return question data
+    return jsonify(questionList), 200
+
+# Authenticated route to submit an answer
+@api.route('/submitanswer', methods=['POST'])
+@jwt_required()
+def submitanswer():
+    #reject if not json
+    if not request.is_json:
+        return jsonify({"msg": "Missing JSON in request"}), 400
+
+    #get username from token
+    username = get_jwt_identity()
+
+    #get userID from database
+    with api.app_context():
+        user = User.query.filter_by(username=username).first()
+        userID = user.id
+
+    #take questionID and answer from json
+    questionID = request.json.get('questionID', None)
+    answer = request.json.get('answer', None)
+
+    #reject if missing questionID, or answer
+    if not questionID:
+        return jsonify({"msg": "Missing questionID parameter"}), 400
+    if not answer:
+        return jsonify({"msg": "Missing answer parameter"}), 400
+
+    #add answer to database
+    with api.app_context():
+        #create new answer
+        new_answer = Answer(user_id=userID, question_id=questionID, answer=answer, feedback="TESTFEEDBACK")
+        db.session.add(new_answer)
+        db.session.commit()
+
+    #return success
+    return jsonify({"msg": "Success"}), 200
+
+# Authenticated route to test api call
+@api.route('/test', methods=['GET'])
+def test():
+    key = api.config['OPEN_AI_KEY']
+    openai.api_key = key
+    response = openai.Completion.create(
+    model="text-davinci-002",
+    prompt="""The following is an answer to a GCSE question. There are 4 marks available.
+
+    The question is: What are the 4 registers in the CPU?
+
+    The answer is: The ALU, the Control Unit, the Accumulator and the Program Counter.
+
+    How many marks would you give this answer?
+
+    """,
+
+    max_tokens=2000,
+    temperature=0.9
+    )
+
+    print(response)
+
+    return jsonify(response), 200
+
+
+
+
 
 #run server
 if __name__ == '__main__':
