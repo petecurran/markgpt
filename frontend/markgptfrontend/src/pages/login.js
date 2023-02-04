@@ -1,26 +1,55 @@
+import roboteacher from '../assets/roboteacher.png'
+import { useState } from 'react'
+import axios from 'axios'
+
+
 const Login = (props) => {
 
+
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+
+    const handleClick = (e) => {
+        e.preventDefault();
+        console.log("user",username);
+        console.log("pass",password);
+
+
+        axios.post('http://127.0.0.1:5000/token', {
+        username: username,
+        password: password,
+        })
+        .then(res => {
+            console.log(res);
+            console.log(res.data);
+    })  
+
+    }
+
     return(
-        <div className="container align-middle">
+        <div className="d-flex h-100 login-page">
+            <div className="container mx-auto my-auto login-card">
 
-            <div className="row">
-                <div className="col-md-3">
-                    <h1>Login</h1>
-                    <form>
-                        <div className="form-group">
-                            <label htmlFor="username">Username</label>
-                            <input type="text" className="form-control" id="username" placeholder="Enter username" />
-                            <label htmlFor="password">Password</label>
-                            <input type="password" className="form-control" id="password" placeholder="Enter password" />
+                <div className="row h-100">
+                    <div className="col-md-4 login-column">
+                        <div className="login-text">
+                            <h1 className="text-center brand-text">markGPT</h1>
+                            <form>
+                                <div className="form-group">
+                                    <input type="text" className="form-control mt-3" id="username" placeholder="Enter username" onChange={(e)=> setUsername(e.target.value)} />
+                                    <input type="password" className="form-control mt-2" id="password" placeholder="Enter password" onChange={(e)=> setPassword(e.target.value)} />
+                                </div>
+                                <button type="submit" className="btn btn-primary mt-3 w-100 login-button" onClick={handleClick}>Login</button>
+                            </form>
                         </div>
-                        <button type="submit" className="btn btn-primary">Login</button>
-                    </form>
-                </div>
+                    </div>
 
-                <div className="col-md-3">
-                    <h1>Big juicy picture!</h1>
+                    <div className="col-md-8 login-picture-holder">
+                        <img src={roboteacher} alt="robot teacher" className="login-picture" />
+                        
 
 
+                    </div>
                 </div>
             </div>
         </div>

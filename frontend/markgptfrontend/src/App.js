@@ -8,7 +8,7 @@ const Login = lazy(() => import('./pages/login'));
 function App() {
 
   return (
-    <div>
+    <div className="page-container">
       <Routes>
         <Route path="/" element={<Answer />} />
         <Route path="/login" element={<Login />} />

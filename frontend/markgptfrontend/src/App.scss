@@ -1,1 +1,75 @@
 @import "~bootstrap/scss/bootstrap.scss";
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&display=swap');
+
+
+
+.login-page {
+    min-height: 100vh;
+    background: #DE6262;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to bottom, #536976, #292E49);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to bottom, #536976, #292E49); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+    .brand-text {
+        font-family: 'Chakra Petch', sans-serif;
+        font-size: 4rem;
+        color: #FFFFFF;
+    }
+
+    .login-card {
+        height:75vh;
+        background-color: pink;
+        //round the corners
+        border-radius: 20px;
+        //add shadow
+        box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    .login-column {
+        background-color: #120334;
+        border-radius: 1rem 0 0 1rem;
+        padding-left: 50px;
+        padding-right: 50px;        
+        display:flex;
+        //vertically center the content
+        align-items: center;
+    }
+
+    .login-text {
+        width:100%;
+    }
+
+    .login-button{
+        font-family: 'Chakra Petch', sans-serif;
+        background-color: #38A0FF;
+    }
+
+    .login-picture-holder{
+        background-color: #38A0FF;
+        border-radius: 0 1rem 1rem 0;
+        position:relative;
+
+
+        .login-picture {
+          width:90%;
+          position:absolute;
+          top:50%;
+          left:50%;
+          transform:translate(-50%, -50%)
+
+        }
+        
+    }
+
+    @keyframes floating {
+        0% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-10%);
+        }
+        100% {
+            transform: translateY(0);
+        }
+    }
+
+}
