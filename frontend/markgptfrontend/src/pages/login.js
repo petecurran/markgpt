@@ -11,18 +11,17 @@ const Login = (props) => {
 
     const handleClick = (e) => {
         e.preventDefault();
-        console.log("user",username);
-        console.log("pass",password);
-
-
-        axios.post('http://127.0.0.1:5000/token', {
-        username: username,
-        password: password,
-        })
+        try {
+            axios.post('http://127.0.0.1:5000/token', {
+            username: username,
+            password: password,
+            })
         .then(res => {
-            console.log(res);
-            console.log(res.data);
-    })  
+            props.handleToken(res.data.access_token);
+         })  
+        } catch (error) {
+            console.log(error);
+        }
 
     }
 

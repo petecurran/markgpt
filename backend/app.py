@@ -13,11 +13,6 @@ jwt = JWTManager(api)
 CORS(api)
 db.init_app(api)
 
-#create database
-#with api.app_context():
-#    db.create_all()
-#    db.session.commit()
-
 #Issue token for login
 @api.route('/token', methods=['POST'])
 def create_token():
