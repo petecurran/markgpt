@@ -1,13 +1,17 @@
 @import "~bootstrap/scss/bootstrap.scss";
 @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&display=swap');
+@import "bootstrap-icons/font/bootstrap-icons.css";
 
 
-
-.login-page {
+body{
     min-height: 100vh;
-    background: #DE6262;  /* fallback for old browsers */
+    background: #536976;  /* fallback for old browsers */
     background: -webkit-linear-gradient(to bottom, #536976, #292E49);  /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(to bottom, #536976, #292E49); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.login-page {
+    
 
     .brand-text {
         font-family: 'Chakra Petch', sans-serif;
@@ -72,4 +76,42 @@
         }
     }
 
+}
+
+.answer-page {
+    background-color: #120334;
+    color:white;
+    padding: 20px;
+    margin-top:10px;
+    //round the corners
+    border-radius: 20px;
+    //add shadow
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.3);
+
+    .questions-array{
+
+        //center align
+        display:flex;
+        justify-content: center;
+
+        
+        .question-selector-button, .question-change-button{
+            //hide the default button behaviour
+            background-color: transparent;
+            color:white;
+            border: none;
+        }
+
+        .selected-false{
+            //set font size to 5
+            font-size: 0.5rem;
+            //vertically center the text
+            display:flex;
+            align-items: center;
+
+        }
+
+
+
+    }
 }

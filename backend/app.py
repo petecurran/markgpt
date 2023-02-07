@@ -108,7 +108,7 @@ def answer():
     return jsonify(answerList), 200
 
 # Authenticated route to fetch a question to answer
-@api.route('/getquestion', methods=['GET'])
+@api.route('/getquestions', methods=['GET'])
 @jwt_required()
 def question():
     #get userID from database

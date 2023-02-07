@@ -38,7 +38,7 @@ function App() {
       <Routes>
         <Route path="/" element={
         <Suspense fallback={<div>Loading...</div>}>
-          <Answer handleLogout={handleLogout} />
+          <Answer handleLogout={handleLogout} authToken={authToken}/>
         </Suspense>
         } />
         
@@ -48,7 +48,6 @@ function App() {
         </Suspense>
         } />
         
-        <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
     </div>
   );
