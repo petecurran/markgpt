@@ -26,11 +26,11 @@ const Answer = (props) => {
     }
 
     const selectQuestion = (e) => {
-        console.log(e.target.value)
+        console.log(e.currentTarget.value)
         //set the question index as int of value
-        setQuestionIndex(parseInt(e.target.value));
+        setQuestionIndex(parseInt(e.currentTarget.value));
         //set the question as the question at the index
-        setQuestion(questions[parseInt(e.target.value)]);
+        setQuestion(questions[parseInt(e.currentTarget.value)]);
     }
 
     //load the questions
@@ -42,7 +42,6 @@ const Answer = (props) => {
         .then(res => {
             setQuestions(res.data);
             setQuestion(res.data[0]);
-            console.log(res.data)
         })
     }, [props.authToken])
 
