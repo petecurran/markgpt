@@ -14,16 +14,28 @@ function App() {
   const handleToken = (token) => {
     setAuthToken(token);
     setIsLoggedIn(true);
+    // Save token to local storage
+    localStorage.setItem('authToken', token);
   }
 
   const handleLogout = () => {
     setAuthToken(null);
     setIsLoggedIn(false);
+    // Remove token from local storage
+    localStorage.removeItem('authToken');
   }
 
-  useEffect (() => {
-    console.log("Auth token: ", authToken);
-  }, [authToken])
+  // Check if token is in local storage
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    if (token){
+      setAuthToken(token);
+      setIsLoggedIn(true);
+      navigate('/');
+    } else {
+      navigate('/login');
+    }
+  }, [navigate])
 
   useEffect (() => {
     if (isLoggedIn === false){
