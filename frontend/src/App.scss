@@ -11,6 +11,8 @@ body{
 }
 
 .login-page {
+
+    min-height:100vh;
     
 
     .brand-text {
@@ -21,7 +23,6 @@ body{
 
     .login-card {
         height:75vh;
-        background-color: pink;
         //round the corners
         border-radius: 20px;
         //add shadow

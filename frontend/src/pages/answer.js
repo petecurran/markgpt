@@ -26,7 +26,6 @@ const Answer = (props) => {
     }
 
     const selectQuestion = (e) => {
-        console.log(e.currentTarget.value)
         //set the question index as int of value
         setQuestionIndex(parseInt(e.currentTarget.value));
         //set the question as the question at the index
