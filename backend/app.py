@@ -119,7 +119,7 @@ def question():
         questionList = []
         #add the questions
         for question in questions:
-            questionList.append({"question": question.question, "id": question.id})      
+            questionList.append({"question": question.question, "id": question.id, "marks": question.marks})      
 
     #return question data
     return jsonify(questionList), 200

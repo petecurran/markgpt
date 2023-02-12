@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import QuestionPicker from '../components/questionpicker';
+import QuestionRenderer from '../components/questionrenderer';
 import axios from 'axios';
 
 
@@ -32,7 +33,7 @@ const Answer = (props) => {
         setQuestion(questions[parseInt(e.currentTarget.value)]);
     }
 
-    //load the questions
+    //load the questions when the page loads
     useEffect(() => {
         axios.get('http://127.0.0.1:5000/getquestions', {
             headers: {
@@ -42,21 +43,26 @@ const Answer = (props) => {
             setQuestions(res.data);
             setQuestion(res.data[0]);
         })
-    }, [props.authToken])
+    }, [])
 
 
         return(
             <div className="container answer-page">
-                <button onClick={props.handleLogout}>Logout</button>
-                <QuestionPicker questions={questions} questionIndex={questionIndex} incrementQuestion={incrementQuestion} decrementQuestion={decrementQuestion} selectQuestion={selectQuestion}/>                
-                <h1>Question 1</h1>
-                <p>{question.question}</p>
-                <form>
-                <textarea className="form-control" id="answer" rows="3" placeholder="Enter your answer"  onChange={(e)=> setCurrentAnswer(e.target.value)}></textarea>
-                <button type="submit" className="btn btn-primary mt-3 w-100 answer-button" onClick={props.handleAnswer}>Mark it!</button>
-                </form>
+                {questions && questions.length > 0 ? 
+                <div>
+                    <button onClick={props.handleLogout}>Logout</button>
+                    <QuestionPicker questions={questions} questionIndex={questionIndex} incrementQuestion={incrementQuestion} decrementQuestion={decrementQuestion} selectQuestion={selectQuestion}/>                
+                    <h1>Question 1</h1>
+                    <QuestionRenderer givenQuestion={question}/>
+                    <form>
+                    <textarea className="form-control" id="answer" rows="3" placeholder="Enter your answer"  onChange={(e)=> setCurrentAnswer(e.target.value)}></textarea>
+                    <button type="submit" className="btn btn-primary mt-3 w-100 answer-button" onClick={props.handleAnswer}>Mark it!</button>
+                    </form>
+                </div> : 
+                <div></div>}
             </div>
         )
     }
+
 
 export default Answer

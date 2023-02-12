@@ -16,6 +16,7 @@ class User(db.Model):
 class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     question = db.Column(db.String(1000), nullable=False)
+    marks = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
         return '<Question %r>' % self.question
