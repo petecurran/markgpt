@@ -1,6 +1,6 @@
 import React, { useState, lazy, useEffect, Suspense } from 'react';
 import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
-//import jwt from 'jsonwebtoken';
+import jwt_decode from 'jwt-decode';
 import axios from 'axios';
 import './App.scss';
 
@@ -32,11 +32,11 @@ function App() {
     localStorage.removeItem('refreshToken');
   }
 
-  // Check if token is in local storage
+  // Check if token is in local storage and handle refreshes.
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
-    if (token){
-      setAuthToken(token);
+    setAuthToken(localStorage.getItem('authToken'));
+    setRefreshToken(localStorage.getItem('refreshToken'));
+    if (handleRefreshToken()){
       setIsLoggedIn(true);
       navigate('/');
     } else {
@@ -45,35 +45,47 @@ function App() {
   }, [navigate])
 
   // Refresh token if needed
-  /*
   const handleRefreshToken = () => {
+    // Check if the tokens are in local storage
+    const authToken = localStorage.getItem('authToken');
+    const refreshToken = localStorage.getItem('refreshToken');
+
+
     if (authToken && refreshToken){
       // Check if the token is expired
-      const decodedToken = jwt.decode(authToken);
+      // Decode the tokens to get the expiration time
+      const decodedToken = jwt_decode(authToken);
+      const decodedRefreshToken = jwt_decode(refreshToken);
+      // Get the current time
       const currentTime = Date.now() / 1000;
-
-      // Check if the refresh token is expired
-      const decodedRefreshToken = jwt.decode(refreshToken);
       
+      // Check if both tokens have expired
       if (decodedToken.exp < currentTime && decodedRefreshToken.exp < currentTime){
-        // Both tokens are expired
+        // Both tokens are expired, logout
         handleLogout();
-      } else if (decodedToken.exp < currentTime){
-        // Auth token is expired, refresh
+        return false;
+        // Check if the auth token has expired, or has less than 5 minutes left
+      } else if (decodedToken.exp < currentTime || decodedToken.exp - currentTime < 300){
+        // Refresh the token
         axios.post('http://127.0.0.1:5000/refresh', {
           refresh_token: refreshToken
         })
         .then(res => {
+          // Handle the new tokens and save to local storage
           handleToken(res.data.access_token, res.data.refresh_token);
         })
         .catch(error => {
+          // Handle error
           console.log(error.response.data.msg);
         })
+        return true;
+      } else {
+        // If neither token is expired, return true
+        return true;
       }
-    }
+    // If the tokens are not in local storage, return false
+    } return false;
   }
-  */
-
 
 
 
