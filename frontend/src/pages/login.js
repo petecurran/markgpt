@@ -17,7 +17,7 @@ const Login = (props) => {
             password: password,
             })
         .then(res => {
-            props.handleToken(res.data.access_token);
+            props.handleToken(res.data.access_token, res.data.refresh_token);
          })  
         } catch (error) {
             console.log(error);
