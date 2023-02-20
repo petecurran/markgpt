@@ -8,6 +8,7 @@ class BaseConfig(object):
     OPEN_AI_KEY = "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"
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=30)
     JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=30)
+    # Test comment
     
 
 class DevelopmentConfig(BaseConfig):
