@@ -87,10 +87,6 @@ function App() {
     } return false;
   }
 
-
-
-
-
   useEffect (() => {
     if (isLoggedIn === false){
       navigate('/login');
