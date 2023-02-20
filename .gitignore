@@ -27,7 +27,7 @@ share/python-wheels/
 MANIFEST
 
 #config files
-markgpt\backend\config.py
+backend\config.py
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
