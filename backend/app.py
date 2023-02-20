@@ -2,7 +2,7 @@ import json
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, create_refresh_token
 from bcrypt import hashpw, gensalt, checkpw
 from models import db, User, Question, Answer
 import openai
@@ -41,6 +41,18 @@ def create_token():
         #reject if password is wrong
         if checkpw(password.encode('utf-8'), user.password.encode('utf-8')) == False:
             return jsonify({"msg": "Bad username or password"}), 401    
+
+    #create token
+    access_token = create_access_token(identity=username)
+    refresh_token = create_refresh_token(identity=username)
+    return jsonify(access_token=access_token, refresh_token=refresh_token), 200
+
+#Issue token for refresh
+@api.route('/refresh', methods=['POST'])
+@jwt_required(refresh=True)
+def refresh_token():
+    #get username from token
+    username = get_jwt_identity()
 
     #create token
     access_token = create_access_token(identity=username)

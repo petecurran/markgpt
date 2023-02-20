@@ -112,8 +112,13 @@ body{
             align-items: center;
 
         }
+    }
 
-
-
+    .question-display{
+        width:100%;
+        
+        #marks-display{
+            text-align:right;
+        }
     }
 }

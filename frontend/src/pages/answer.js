@@ -43,6 +43,9 @@ const Answer = (props) => {
             setQuestions(res.data);
             setQuestion(res.data[0]);
         })
+        .catch (error => {
+            console.log(error.response.data.msg);
+        })
     }, [])
 
 
