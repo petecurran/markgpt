@@ -66,7 +66,7 @@ function App() {
         // Check if the auth token has expired, or has less than 5 minutes left
       } else if (decodedToken.exp < currentTime || decodedToken.exp - currentTime < 300){
         // Refresh the token
-        axios.post('http://127.0.0.1:5000/refresh',{
+        axios.post('http://127.0.0.1:5000/refresh',{},{
           headers: {
             'Authorization': 'Bearer ' + refreshToken
           }
