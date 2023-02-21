@@ -12,8 +12,10 @@ function App() {
   const [authToken, setAuthToken] = useState(null);
   const [refreshToken, setRefreshToken] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [questionSubmitted, setQuestionSubmitted] = useState(false);
   const navigate = useNavigate();
 
+  // Handle token from login
   const handleToken = (token, refresh_token) => {
     setAuthToken(token);
     setRefreshToken(refresh_token);
@@ -23,29 +25,8 @@ function App() {
     localStorage.setItem('refreshToken', refresh_token);
   }
 
-  const handleLogout = () => {
-    setAuthToken(null);
-    setRefreshToken(null);
-    setIsLoggedIn(false);
-    // Remove token from local storage
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('refreshToken');
-  }
-
-  // Check if token is in local storage and handle refreshes.
-  useEffect(() => {
-    setAuthToken(localStorage.getItem('authToken'));
-    setRefreshToken(localStorage.getItem('refreshToken'));
-    if (handleRefreshToken()){
-      setIsLoggedIn(true);
-      navigate('/');
-    } else {
-      navigate('/login');
-    }
-  }, [navigate])
-
-  // Refresh token if needed
-  const handleRefreshToken = () => {
+   // Refresh token if needed
+   const handleRefreshToken = () => {
     // Check if the tokens are in local storage
     const authToken = localStorage.getItem('authToken');
     const refreshToken = localStorage.getItem('refreshToken');
@@ -89,6 +70,29 @@ function App() {
     } return false;
   }
 
+  // Logout scripts
+  const handleLogout = () => {
+    setAuthToken(null);
+    setRefreshToken(null);
+    setIsLoggedIn(false);
+    // Remove token from local storage
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('refreshToken');
+  }
+
+  // Check if token is in local storage and handle refreshes.
+  useEffect(() => {
+    setAuthToken(localStorage.getItem('authToken'));
+    setRefreshToken(localStorage.getItem('refreshToken'));
+    if (handleRefreshToken()){
+      setIsLoggedIn(true);
+      navigate('/');
+    } else {
+      navigate('/login');
+    }
+  }, [navigate])
+
+  // Direct users when they arrive at the site
   useEffect (() => {
     if (isLoggedIn === false){
       navigate('/login');
@@ -97,12 +101,38 @@ function App() {
     }
   }, [isLoggedIn, navigate])
 
+  // Handle answer submission
+  const handleAnswer = (question) => {
+    // Check if the token is expired
+    if (handleRefreshToken()){
+      // display the answer on screen
+      console.log(question);
+      // Set the flag to show we've successfully submitted.
+      setQuestionSubmitted(true);
+    } else {
+      // TODO - what if the token has expired?
+      // If the token is expired, logout
+      handleLogout();
+    }
+  }
+
+  const clearAnswer = () => {
+    setQuestionSubmitted(false);
+  }
+      
+
+
   return (
     <div className="page-container">
       <Routes>
         <Route path="/" element={
         <Suspense fallback={<div>Loading...</div>}>
-          <Answer handleLogout={handleLogout} authToken={authToken} refreshToken={refreshToken} />
+          <Answer handleLogout={handleLogout} 
+                  authToken={authToken} 
+                  refreshToken={refreshToken} 
+                  handleAnswer={handleAnswer}
+                  questionSubmitted={questionSubmitted}
+                  clearAnswer={clearAnswer}/>
         </Suspense>
         } />
         
