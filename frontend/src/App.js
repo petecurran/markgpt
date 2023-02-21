@@ -49,8 +49,7 @@ function App() {
     // Check if the tokens are in local storage
     const authToken = localStorage.getItem('authToken');
     const refreshToken = localStorage.getItem('refreshToken');
-
-
+    
     if (authToken && refreshToken){
       // Check if the token is expired
       // Decode the tokens to get the expiration time
@@ -67,12 +66,15 @@ function App() {
         // Check if the auth token has expired, or has less than 5 minutes left
       } else if (decodedToken.exp < currentTime || decodedToken.exp - currentTime < 300){
         // Refresh the token
-        axios.post('http://127.0.0.1:5000/refresh', {
-          refresh_token: refreshToken
+        axios.post('http://127.0.0.1:5000/refresh',{
+          headers: {
+            'Authorization': 'Bearer ' + refreshToken
+          }
         })
         .then(res => {
           // Handle the new tokens and save to local storage
-          handleToken(res.data.access_token, res.data.refresh_token);
+          setAuthToken(res.data.access_token);
+          localStorage.setItem ('authToken', res.data.access_token);
         })
         .catch(error => {
           // Handle error
