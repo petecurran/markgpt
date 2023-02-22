@@ -57,7 +57,7 @@ const Answer = (props) => {
         // Prevent the page from refreshing
         event.preventDefault();
         // Pass the answer to the parent component
-        props.handleAnswer(currentAnswer)
+        props.handleAnswer(question, currentAnswer)
     }
 
     // Reformat the page once the question is submitted
@@ -77,12 +77,19 @@ const Answer = (props) => {
                 {questions && questions.length > 0 ? 
                 <div>
                     <button onClick={props.handleLogout}>Logout</button>
+                    {!showResponsePage ?
                     <QuestionPicker questions={questions} questionIndex={questionIndex} incrementQuestion={incrementQuestion} decrementQuestion={decrementQuestion} selectQuestion={selectQuestion}/>                
+                    : <div></div>}
+                    
+                    
                     <h1>Question 1</h1>
                     <QuestionRenderer givenQuestion={question}/>
                     {showResponsePage ?
                         <div>
                             <AnswerRenderer givenAnswer={currentAnswer}/>
+                            <h4>Feedback</h4>
+                            {props.response}
+                            <br />
                             <button onClick={props.clearAnswer}>Try again</button>
                         </div>
                     :
@@ -91,7 +98,6 @@ const Answer = (props) => {
                             <textarea className="form-control" id="answer" rows="3" placeholder="Enter your answer"  onChange={(e)=> setCurrentAnswer(e.target.value)}></textarea>
                             <button type="submit" className="btn btn-primary mt-3 w-100 answer-button" onClick={passToHandleAnswer}>Mark it!</button>
                             </form>
-                            
 
                         </div>
                     }

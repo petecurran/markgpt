@@ -13,6 +13,7 @@ function App() {
   const [refreshToken, setRefreshToken] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [questionSubmitted, setQuestionSubmitted] = useState(false);
+  const [response, setResponse] = useState(null);
   const navigate = useNavigate();
 
   // Handle token from login
@@ -102,11 +103,36 @@ function App() {
   }, [isLoggedIn, navigate])
 
   // Handle answer submission
-  const handleAnswer = (question) => {
+  const handleAnswer = (question, currentAnswer) => {
     // Check if the token is expired
     if (handleRefreshToken()){
       // display the answer on screen
-      console.log(question);
+      console.log(question.marks, question.id, question.question);
+
+      // Send the answer to the backend
+      axios.post('http://127.0.0.1:5000/submitanswer', {
+        question_id: question.id,
+        answer: currentAnswer,
+        marks: question.marks
+      }, {
+        headers: {
+          "Authorization": "Bearer " + authToken
+        }
+      })
+      .then(res => {
+        // Display the response
+        console.log(res.data.msg);
+        setResponse(res.data.msg);
+      })
+      .catch(error => {
+        // Handle error
+        console.log(error.response.data.msg);
+      })
+
+
+      // Testing - create a dummy response
+      setResponse("Here's your answer!")
+
       // Set the flag to show we've successfully submitted.
       setQuestionSubmitted(true);
     } else {
@@ -132,7 +158,8 @@ function App() {
                   refreshToken={refreshToken} 
                   handleAnswer={handleAnswer}
                   questionSubmitted={questionSubmitted}
-                  clearAnswer={clearAnswer}/>
+                  clearAnswer={clearAnswer}
+                  response={response}/>
         </Suspense>
         } />
         

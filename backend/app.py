@@ -153,24 +153,52 @@ def submitanswer():
         userID = user.id
 
     #take questionID and answer from json
-    questionID = request.json.get('questionID', None)
+    questionID = request.json.get('question_id', None)
     answer = request.json.get('answer', None)
+    marks = request.json.get('marks', None)
 
     #reject if missing questionID, or answer
     if not questionID:
         return jsonify({"msg": "Missing questionID parameter"}), 400
     if not answer:
         return jsonify({"msg": "Missing answer parameter"}), 400
+    if not marks:
+        return jsonify({"msg": "Missing marks parameter"}), 400
+
+    # Fetch the question from the database based on id
+    with api.app_context():
+        questionText = Question.query.filter_by(id=questionID).first() 
+    
+    ###############################################################################################################
+    # This bit costs tokens!
+    ###############################################################################################################
+
+    """ # Send the answer to OpenAI for a response
+    # get key from config
+    key = api.config['OPEN_AI_KEY']
+    openai.api_key = key
+    # send the answer to OpenAI
+    response = openai.Completion.create(
+    model="text-davinci-002",
+    prompt="Tell me a joke!",
+    temperature=0.9,
+    max_tokens=150,
+    )
+
+    # Print the response for testing
+    print(response.choices[0].text) """
+
+    ###############################################################################################################
 
     #add answer to database
-    with api.app_context():
+    #with api.app_context():
         #create new answer
-        new_answer = Answer(user_id=userID, question_id=questionID, answer=answer, feedback="TESTFEEDBACK")
-        db.session.add(new_answer)
-        db.session.commit()
+        #new_answer = Answer(user_id=userID, question_id=questionID, answer=answer, feedback="TESTFEEDBACK")
+        #db.session.add(new_answer)
+        #db.session.commit()
 
     #return success
-    return jsonify({"msg": "Success"}), 200
+    return jsonify({"msg": "Answer goes here"}), 200
 
 # Authenticated route to test api call
 @api.route('/test', methods=['GET'])
