@@ -74,22 +74,28 @@ const Answer = (props) => {
 
         return(
             <div className="container answer-page">
+                
                 {questions && questions.length > 0 ? 
                 <div>
-                    <button onClick={props.handleLogout}>Logout</button>
+                    <button onClick={props.handleLogout} className="btn btn-primary">Logout</button>
                     {!showResponsePage ?
                     <QuestionPicker questions={questions} questionIndex={questionIndex} incrementQuestion={incrementQuestion} decrementQuestion={decrementQuestion} selectQuestion={selectQuestion}/>                
                     : <div></div>}
                     
-                    
-                    <h1>Question 1</h1>
-                    <QuestionRenderer givenQuestion={question}/>
+                    <div className="question-box">
+                        <h4>Question {questionIndex + 1}</h4>
+                        <QuestionRenderer givenQuestion={question}/>
+                    </div>
                     {showResponsePage ?
                         <div>
-                            <AnswerRenderer givenAnswer={currentAnswer}/>
-                            <h4>Feedback</h4>
-                            {props.response}
-                            <br />
+                            <div className="submitted-answer">
+                                <h4>Your answer:</h4>
+                                <AnswerRenderer givenAnswer={currentAnswer}/>
+                            </div>
+                            <div className="feedback-box">
+                                <h4>Feedback</h4>
+                                {props.response}
+                            </div>
                             <button onClick={props.clearAnswer}>Try again</button>
                         </div>
                     :

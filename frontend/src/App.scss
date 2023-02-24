@@ -121,4 +121,34 @@ body{
             text-align:right;
         }
     }
+
+    .submitted-answer{
+        //round the corners
+        border-radius: 5px;
+        //add shadow
+        box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.3);
+        padding: 10px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        background-color: #536976;
+        color:white;
+
+        p {
+            //Set text to italics
+            font-style: italic;
+        }
+
+    }
+
+    .feedback-box{
+        //round the corners
+        border-radius: 5px;
+        //add shadow
+        box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.3);
+        padding: 10px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        background-color: #38A0FF;
+        color:white;
+    }
 }
