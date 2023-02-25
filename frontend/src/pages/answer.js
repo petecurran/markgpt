@@ -4,6 +4,8 @@ import QuestionRenderer from '../components/questionrenderer';
 import AnswerRenderer from '../components/answerrenderer';
 import axios from 'axios';
 import { Popover, ArrowContainer } from 'react-tiny-popover'
+import roboavatar from '../assets/roboavatar.png'
+
 
 
 const Answer = (props) => {
@@ -84,46 +86,52 @@ const Answer = (props) => {
         return(
             <div className="container answer-page">
                 
-                {/* Username & logout popover. Uses library imported above.
-                    The popover itself is impervious to CSS, so has to use inline styles.
-                    The arrow container adds the arrow. */}
-                <div className="username-popover">
-                    <Popover
-                        isOpen={isPopoverOpen}
-                        positions={['bottom']}
-                        onClickOutside={() => setIsPopoverOpen(false)}
-                        content={({ position, childRect, popoverRect }) => (
-                        <ArrowContainer 
-                            position={position}
-                            childRect={childRect}
-                            popoverRect={popoverRect}
-                            arrowColor={'white'}
-                            arrowSize={10}
-                            arrowStyle={{opacity: 1}}
-                            className="popover-arrow-container"
-                            arrowClassName="popover-arrow"
-                        >
-                        <div style={{backgroundColor:"white", padding:"10px", borderRadius:"3px"}}>
-                            <button 
-                                style={{backgroundColor:"transparent", color:"black", textDecoration:"underline", border:"none"}}
-                                onClick={() => handleLogoutClick()}
+                <div className="row">
+                    {/* Little avatar picture for the roboteacher.*/}
+                    <div className="avatar col">
+                        <img src={roboavatar} alt="markGPT"/>
+                    </div>
+                    {/* Username & logout popover. Uses library imported above.
+                        The popover itself is impervious to CSS, so has to use inline styles.
+                        The arrow container adds the arrow. */}
+                    <div className="username-popover col">
+                        <Popover
+                            isOpen={isPopoverOpen}
+                            positions={['bottom']}
+                            onClickOutside={() => setIsPopoverOpen(false)}
+                            content={({ position, childRect, popoverRect }) => (
+                            <ArrowContainer 
+                                position={position}
+                                childRect={childRect}
+                                popoverRect={popoverRect}
+                                arrowColor={'white'}
+                                arrowSize={10}
+                                arrowStyle={{opacity: 1}}
+                                className="popover-arrow-container"
+                                arrowClassName="popover-arrow"
                             >
-                                Log out
+                            <div style={{backgroundColor:"white", padding:"10px", borderRadius:"3px"}}>
+                                <button 
+                                    style={{backgroundColor:"transparent", color:"black", textDecoration:"underline", border:"none"}}
+                                    onClick={() => handleLogoutClick()}
+                                >
+                                    Log out
+                                </button>
+                            </div>
+                            </ArrowContainer>
+                            )}
+                            >
+                            <button className={"btn btn-primary"}onClick={() => setIsPopoverOpen(!isPopoverOpen)}>
+                                <i className="bi bi-person-circle text-primary"></i> {props.username}
                             </button>
-                        </div>
-                        </ArrowContainer>
-                        )}
-                        >
-                        <button className={"btn btn-primary"}onClick={() => setIsPopoverOpen(!isPopoverOpen)}>
-                            <i className="bi bi-person-circle text-primary"></i> {props.username}
-                        </button>
-                    </Popover>
+                        </Popover>
+                    </div>
                 </div>
 
-
-
+                {/* If there are questions, render the question picker and the question box. */}
+                
                 {questions && questions.length > 0 ? 
-                <div>
+                <div className="row">
                     {!showResponsePage ?
                     <QuestionPicker questions={questions} questionIndex={questionIndex} incrementQuestion={incrementQuestion} decrementQuestion={decrementQuestion} selectQuestion={selectQuestion}/>                
                     : <div></div>}
