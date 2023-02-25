@@ -90,6 +90,21 @@ body{
     //add shadow
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.3);
 
+    .username-popover{
+        //align the popover to the right
+        text-align: right;
+
+        button{
+            //hide the default button behaviour
+            background-color: transparent;
+            color:white;
+            border: none;
+
+        }
+    }
+
+
+
     .questions-array{
 
         //center align

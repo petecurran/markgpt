@@ -3,6 +3,7 @@ import QuestionPicker from '../components/questionpicker';
 import QuestionRenderer from '../components/questionrenderer';
 import AnswerRenderer from '../components/answerrenderer';
 import axios from 'axios';
+import { Popover, ArrowContainer } from 'react-tiny-popover'
 
 
 const Answer = (props) => {
@@ -12,6 +13,7 @@ const Answer = (props) => {
     const [questionIndex, setQuestionIndex] = useState(0);
     const [currentAnswer, setCurrentAnswer] = useState('');
     const [showResponsePage, setShowResponsePage] = useState(false);
+    const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
     // Handle the arrow selector for questions
     const incrementQuestion = () => {
@@ -71,40 +73,53 @@ const Answer = (props) => {
         }
     }, [props.questionSubmitted])
 
+    // Handle the logout button
+    const handleLogoutClick = () => {
+        // Call the parent component's logout function
+        props.handleLogout();
+        setIsPopoverOpen(false);
+    }
+
 
         return(
             <div className="container answer-page">
                 
-                <nav className="navbar navbar-dark">
-                    <div className="container-fluid">
-                        <button className="navbar-toggler bg-primary" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon"></span>
-                        </button>
-                        <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li className="nav-item">
-                            <a className="nav-link active" aria-current="page" href="#">Home</a>
-                            </li>
-                            <li className="nav-item">
-                            <a className="nav-link" href="#">Link</a>
-                            </li>
-                            <li className="nav-item dropdown">
-                            <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Dropdown
-                            </a>
-                            <ul className="dropdown-menu">
-                                <li><a className="dropdown-item" href="#">Action</a></li>
-                                <li><a className="dropdown-item" href="#">Another action</a></li>
-                                <li><a className="dropdown-item" href="#">Something else here</a></li>
-                            </ul>
-                            </li>
-                            <li className="nav-item">
-                            <a className="nav-link disabled">Disabled</a>
-                            </li>
-                        </ul>
+                {/* Username & logout popover. Uses library imported above.
+                    The popover itself is impervious to CSS, so has to use inline styles.
+                    The arrow container adds the arrow. */}
+                <div className="username-popover">
+                    <Popover
+                        isOpen={isPopoverOpen}
+                        positions={['bottom']}
+                        onClickOutside={() => setIsPopoverOpen(false)}
+                        content={({ position, childRect, popoverRect }) => (
+                        <ArrowContainer 
+                            position={position}
+                            childRect={childRect}
+                            popoverRect={popoverRect}
+                            arrowColor={'white'}
+                            arrowSize={10}
+                            arrowStyle={{opacity: 1}}
+                            className="popover-arrow-container"
+                            arrowClassName="popover-arrow"
+                        >
+                        <div style={{backgroundColor:"white", padding:"10px", borderRadius:"3px"}}>
+                            <button 
+                                style={{backgroundColor:"transparent", color:"black", textDecoration:"underline", border:"none"}}
+                                onClick={() => handleLogoutClick()}
+                            >
+                                Log out
+                            </button>
                         </div>
-                    </div>
-                </nav>
+                        </ArrowContainer>
+                        )}
+                        >
+                        <button className={"btn btn-primary"}onClick={() => setIsPopoverOpen(!isPopoverOpen)}>
+                            Click me!
+                        </button>
+                    </Popover>
+                </div>
+
 
 
                 {questions && questions.length > 0 ? 
