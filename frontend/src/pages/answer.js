@@ -115,7 +115,7 @@ const Answer = (props) => {
                         )}
                         >
                         <button className={"btn btn-primary"}onClick={() => setIsPopoverOpen(!isPopoverOpen)}>
-                            {props.username}
+                            <i className="bi bi-person-circle text-primary"></i> {props.username}
                         </button>
                     </Popover>
                 </div>

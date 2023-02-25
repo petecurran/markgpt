@@ -1,3 +1,7 @@
+// Change the primary color before importing bootstrap
+$primary: #38A0FF;
+
+
 @import "~bootstrap/scss/bootstrap.scss";
 @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&display=swap');
 @import "bootstrap-icons/font/bootstrap-icons.css";
