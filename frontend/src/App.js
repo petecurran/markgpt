@@ -14,6 +14,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [questionSubmitted, setQuestionSubmitted] = useState(false);
   const [response, setResponse] = useState(null);
+  const [username, setUsername] = useState(null);
   const navigate = useNavigate();
 
   // Handle token from login
@@ -21,10 +22,24 @@ function App() {
     setAuthToken(token);
     setRefreshToken(refresh_token);
     setIsLoggedIn(true);
+
     // Save tokens to local storage
     localStorage.setItem('authToken', token);
     localStorage.setItem('refreshToken', refresh_token);
   }
+
+  // Update the username whenever the user logs in
+  useEffect (() => {
+    // Trigger when authToken changes
+    if (authToken){    
+        // Decode the token to get the username
+        const decodedToken = jwt_decode(authToken);
+        setUsername(decodedToken.sub);
+    } else {
+        setUsername(null);
+    }
+  }, [authToken])
+
 
    // Refresh token if needed
    const handleRefreshToken = () => {
@@ -157,6 +172,7 @@ function App() {
                   authToken={authToken} 
                   refreshToken={refreshToken} 
                   handleAnswer={handleAnswer}
+                  username={username}
                   questionSubmitted={questionSubmitted}
                   clearAnswer={clearAnswer}
                   response={response}/>

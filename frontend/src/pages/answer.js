@@ -115,7 +115,7 @@ const Answer = (props) => {
                         )}
                         >
                         <button className={"btn btn-primary"}onClick={() => setIsPopoverOpen(!isPopoverOpen)}>
-                            Click me!
+                            {props.username}
                         </button>
                     </Popover>
                 </div>
@@ -124,7 +124,6 @@ const Answer = (props) => {
 
                 {questions && questions.length > 0 ? 
                 <div>
-                    <button onClick={props.handleLogout} className="btn btn-primary">Logout</button>
                     {!showResponsePage ?
                     <QuestionPicker questions={questions} questionIndex={questionIndex} incrementQuestion={incrementQuestion} decrementQuestion={decrementQuestion} selectQuestion={selectQuestion}/>                
                     : <div></div>}
