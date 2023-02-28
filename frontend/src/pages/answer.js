@@ -82,19 +82,30 @@ const Answer = (props) => {
         setIsPopoverOpen(false);
     }
 
+    // Shorten the username when required
+    const shortenUsername = (username) => {
+        if (username.length > 10){
+            return username.substring(0, 10) + '...';
+        } else {
+            return username;
+        }
+    }
+
+
 
         return(
             <div className="container answer-page">
                 
                 <div className="row">
                     {/* Little avatar picture for the roboteacher.*/}
-                    <div className="avatar col">
+                    <div className="avatar col col-8">
                         <img src={roboavatar} alt="markGPT"/>
+                        <h4 className="brand-text-small">markGPT</h4>
                     </div>
                     {/* Username & logout popover. Uses library imported above.
                         The popover itself is impervious to CSS, so has to use inline styles.
                         The arrow container adds the arrow. */}
-                    <div className="username-popover col">
+                    <div className="username-popover col col-4">
                         <Popover
                             isOpen={isPopoverOpen}
                             positions={['bottom']}
@@ -121,8 +132,8 @@ const Answer = (props) => {
                             </ArrowContainer>
                             )}
                             >
-                            <button className={"btn btn-primary"}onClick={() => setIsPopoverOpen(!isPopoverOpen)}>
-                                <i className="bi bi-person-circle text-primary"></i> {props.username}
+                            <button className={"btn btn-primary user-button"}onClick={() => setIsPopoverOpen(!isPopoverOpen)}>
+                                <i className="bi bi-person-circle text-primary mx-1" ></i>{shortenUsername(props.username)}
                             </button>
                         </Popover>
                     </div>
@@ -150,13 +161,13 @@ const Answer = (props) => {
                                 <h4>Feedback</h4>
                                 {props.response}
                             </div>
-                            <button onClick={props.clearAnswer}>Try again</button>
+                            <button onClick={props.clearAnswer} className="btn btn-primary w-100 text-light"><h4 className="brand-text-button m-0">Back</h4></button>
                         </div>
                     :
                         <div>
                             <form>
                             <textarea className="form-control" id="answer" rows="3" placeholder="Enter your answer"  onChange={(e)=> setCurrentAnswer(e.target.value)}></textarea>
-                            <button type="submit" className="btn btn-primary mt-3 w-100 answer-button" onClick={passToHandleAnswer}>Mark it!</button>
+                            <button type="submit" className="btn btn-primary mt-3 w-100 answer-button brand-text-button" onClick={passToHandleAnswer}>Mark it!</button>
                             </form>
 
                         </div>

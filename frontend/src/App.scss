@@ -100,12 +100,37 @@ body{
         img{
             border-radius: 50%;
             height: 50px;
+            display:inline;
         }
+    }
+
+    .brand-text-small {
+        font-family: 'Chakra Petch', sans-serif;
+        font-size: 2rem;
+        color: #FFFFFF;
+        display:inline;
+        // Gap between the text and the image
+        margin-left: 10px;
+        // Align to the bottom
+        vertical-align: bottom;
+
+    }
+
+    .brand-text-button{
+        font-family: 'Chakra Petch', sans-serif;
+        font-size: 1.5rem;
+        color: #FFFFFF;
     }
 
     .username-popover{
         //align the popover to the right
         text-align: right;
+
+        //align to bottom
+        display:flex;
+        align-items: flex-end;
+        // Align to right
+        justify-content: flex-end;
 
         button{
             //hide the default button behaviour
@@ -113,6 +138,9 @@ body{
             color:white;
             border: none;
 
+            // Align to center
+            display:flex;
+            align-items: center;
         }
     }
 
@@ -140,6 +168,10 @@ body{
             align-items: center;
 
         }
+    }
+
+    .question-box{
+        margin-top:10px;
     }
 
     .question-display{
@@ -176,7 +208,12 @@ body{
         padding: 10px;
         margin-top: 10px;
         margin-bottom: 10px;
-        background-color: #38A0FF;
-        color:white;
+        background-color: #FFFFFF;
+        color:black;
+
+        h4 {
+            // Brand font
+            font-family: 'Chakra Petch', sans-serif;
+        }
     }
 }
