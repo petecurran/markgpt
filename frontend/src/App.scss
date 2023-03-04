@@ -14,6 +14,38 @@ body{
     background: linear-gradient(to bottom, #536976, #292E49); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
+.login-page-mobile {
+    min-height:100vh;
+    
+    .login-picture-holder-mobile{
+        background-color: #38A0FF;
+        border-radius: 1rem 1rem 0 0;
+        position:relative;
+        //center align
+        display:flex;
+        justify-content: center;
+
+
+        .login-picture-mobile {
+            width:90%;
+            //center align
+            display:flex;
+            justify-content: center;
+            
+        }
+
+    }
+
+    .login-column-mobile {
+        background-color: #120334;
+        border-radius: 0 0 1rem 1rem;
+        height: 50vh;
+        
+
+    }
+    
+}
+
 
 .login-page {
 
