@@ -16,6 +16,7 @@ body{
 
 .login-page-mobile {
     min-height:100vh;
+    min-width:300px;
     
     .login-picture-holder-mobile{
         background-color: #38A0FF;
@@ -27,7 +28,7 @@ body{
 
 
         .login-picture-mobile {
-            width:90%;
+            width:100%;
             //center align
             display:flex;
             justify-content: center;
@@ -41,6 +42,19 @@ body{
         border-radius: 0 0 1rem 1rem;
         height: 50vh;
         
+        .brand-text-mobile {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 3rem;
+            color: #FFFFFF;
+            margin-top:40px;
+            margin-bottom:40px;
+        }
+
+        .login-form-mobile{
+            max-width:380px;
+            margin:auto;
+        }
+
 
     }
     
@@ -51,11 +65,22 @@ body{
 
     min-height:100vh;
     
+    //Prevent the brand text from overflowing
+    @media (max-width: 1200px) {
+        .brand-text {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 3rem;
+            color: #FFFFFF;
+        }
+    }
 
-    .brand-text {
-        font-family: 'Chakra Petch', sans-serif;
-        font-size: 4rem;
-        color: #FFFFFF;
+    //Brand text on wider screens
+    @media (min-width: 1200px) {   
+        .brand-text {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 4rem;
+            color: #FFFFFF;
+        }
     }
 
     .login-card {

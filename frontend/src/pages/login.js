@@ -28,8 +28,8 @@ const Login = (props) => {
     return(
         <div>
 
-            {/* Mobile version */}
-            <div className="d-flex h-100 login-page-mobile d-md-none p-2">
+            {/* Mobile version & tablet version */}
+            <div className="d-flex h-100 login-page-mobile d-lg-none p-2">
                 <div className="container mx-auto my-auto login-card-mobile">
                     <div className="row">
                         <div className="col-12 login-picture-holder-mobile">
@@ -39,8 +39,8 @@ const Login = (props) => {
                     <div className="row">
                         <div className="col-12 login-column-mobile">
                             <div className="login-text">
-                                <h1 className="text-center brand-text">markGPT</h1>
-                                <form>
+                                <h1 className="text-center brand-text-mobile">markGPT</h1>
+                                <form className="login-form-mobile">
                                     <div className="form-group">
                                         <input type="text" className="form-control mt-3" id="username" placeholder="Enter username" onChange={(e)=> setUsername(e.target.value)} />
                                         <input type="password" className="form-control mt-2" id="password" placeholder="Enter password" onChange={(e)=> setPassword(e.target.value)} />
@@ -55,7 +55,7 @@ const Login = (props) => {
 
 
             {/* Desktop version */}
-            <div className="d-flex h-100 login-page d-none d-md-flex">
+            <div className="d-flex h-100 login-page d-none d-lg-flex">
                 <div className="container mx-auto my-auto login-card">
                     <div className="row h-100">
                         <div className="col-md-4 login-column">
