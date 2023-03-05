@@ -8,7 +8,7 @@ from models import db, User, Question, Answer
 import openai
 
 api = Flask(__name__)
-api.config.from_object('config.DevelopmentConfig')
+api.config.from_object('configuration.DevelopmentConfig')
 jwt = JWTManager(api)
 CORS(api)
 db.init_app(api)

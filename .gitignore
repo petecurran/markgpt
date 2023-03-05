@@ -28,7 +28,7 @@ MANIFEST
 
 #config files
 /backend/config.py
-/backend/test.py
+/backend/configuration.py
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
