@@ -173,20 +173,46 @@ def submitanswer():
     # This bit costs tokens!
     ###############################################################################################################
 
-    """ # Send the answer to OpenAI for a response
+    # Send the answer to OpenAI for a response
     # get key from config
     key = api.config['OPEN_AI_KEY']
     openai.api_key = key
-    # send the answer to OpenAI
-    response = openai.Completion.create(
-    model="text-davinci-002",
-    prompt="Tell me a joke!",
-    temperature=0.9,
-    max_tokens=150,
-    )
+
+    # If testing is enabled, send the answer to OpenAI
+    if api.config['TESTING_ANSWERS_API']:
+        # send the answer to OpenAI
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role":"system", "content": "You are a teacher marking a student's essay"},
+                {"role":"user", "content": "The question I am answering is: " + questionText.question},
+                {"role":"user", "content": "There are " + str(marks) + " marks available"},
+                {"role":"user", "content": """To get all 8 marks the answer should address all four bullet points, making clear points about each. There will be positives and negatives presented for each area, but they will be very brief.
+                                                The answer gets more marks if it uses accurate examples to support points, and addresses all of the bullet points provided. Do not award marks if points aren't relevant or don't make sense.
+                                                The answer doesn't need to provide specific evidence.
+                                                If the answer is informal or shows poor grammar, this should lower the mark.
+                                                """},
+                {"role":"user", "content": "The answer I am submitting is: " + answer},
+                {"role":"user", "content": "How many marks would I recieve for this answer, and how could I improve it?"},
+            ]
+
+        )
+    
+    # If testing is disabled, send a placeholder response
+    else:
+        response = {"choices": [
+        {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+            "content": "Not a real response - testing is disabled",
+            "role": "assistant"
+        }
+        }
+    ],}
 
     # Print the response for testing
-    print(response.choices[0].text) """
+    print(response) 
 
     ###############################################################################################################
 
@@ -198,7 +224,7 @@ def submitanswer():
         #db.session.commit()
 
     #return success
-    return jsonify({"msg": "Answer goes here"}), 200
+    return jsonify(response), 200
 
 # Authenticated route to test api call
 @api.route('/test', methods=['GET'])

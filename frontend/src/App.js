@@ -121,9 +121,6 @@ function App() {
   const handleAnswer = (question, currentAnswer) => {
     // Check if the token is expired
     if (handleRefreshToken()){
-      // display the answer on screen
-      console.log(question.marks, question.id, question.question);
-
       // Send the answer to the backend
       axios.post('http://127.0.0.1:5000/submitanswer', {
         question_id: question.id,
@@ -136,17 +133,19 @@ function App() {
       })
       .then(res => {
         // Display the response
-        console.log(res.data.msg);
-        setResponse(res.data.msg);
+        // Breakdown of code below:
+        // data -> the content of the axios response
+        // choices -> the choices array within the data
+        // [0] -> the first choice in the choices array
+        // message -> the message object within the choice
+        // content -> the content of the message object
+        //console.log(res.data.choices[0].message.content);
+        setResponse(res.data.choices[0].message.content);
       })
       .catch(error => {
         // Handle error
         console.log(error.response.data.msg);
       })
-
-
-      // Testing - create a dummy response
-      setResponse("Here's your answer!")
 
       // Set the flag to show we've successfully submitted.
       setQuestionSubmitted(true);
