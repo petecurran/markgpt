@@ -8,6 +8,7 @@ const Login = (props) => {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [failedLogin, setFailedLogin] = useState(false);
 
     const handleClick = (e) => {
         e.preventDefault();
@@ -19,10 +20,15 @@ const Login = (props) => {
         .then(res => {
             props.handleToken(res.data.access_token, res.data.refresh_token);
          })  
+        .catch (error => {
+            if (error.response.status === 401){
+                setFailedLogin(true);
+            }
+        })
         } catch (error) {
-            console.log(error);
+            console.log(error)
+            
         }
-
     }
 
     return(
@@ -40,6 +46,7 @@ const Login = (props) => {
                         <div className="col-12 login-column-mobile">
                             <div className="login-text">
                                 <h1 className="text-center brand-text-mobile">markGPT</h1>
+                                {failedLogin ? <p className="text-center text-danger failed-login-text">Incorrect username or password</p> : null}
                                 <form className="login-form-mobile">
                                     <div className="form-group">
                                         <input type="text" className="form-control mt-3" id="username" placeholder="Enter username" onChange={(e)=> setUsername(e.target.value)} />
@@ -61,6 +68,7 @@ const Login = (props) => {
                         <div className="col-md-4 login-column">
                             <div className="login-text">
                                 <h1 className="text-center brand-text">markGPT</h1>
+                                {failedLogin ? <p className="text-center text-danger failed-login-text">Incorrect username or password</p> : null}
                                 <form>
                                     <div className="form-group">
                                         <input type="text" className="form-control mt-3" id="username" placeholder="Enter username" onChange={(e)=> setUsername(e.target.value)} />
